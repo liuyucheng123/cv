@@ -1,5 +1,4 @@
 name: Build LaTeX CV
-
 on:
   push:
     branches: [ main ]
@@ -17,7 +16,7 @@ jobs:
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v3
         with:
-          root_file: main.tex
+          root_file: ./main.tex  # 这里加个 ./
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
