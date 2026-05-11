@@ -1,11 +1,11 @@
-name: Model CI/CD Build
+name: Build LaTeX CV
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  build-and-release:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -14,23 +14,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v3
         with:
-          python-version: '3.9'
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Train model
-        run: python train_model.py
+          root_file: main.tex
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          name: Model Release v${{ github.run_number }}
+          name: CV Release v${{ github.run_number }}
           tag_name: v${{ github.run_number }}
-          body: "Automatically generated linear model from CI/CD pipeline."
-          files: linear_model.txt
+          body: "Auto-generated PDF resume"
+          files: main.pdf
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
